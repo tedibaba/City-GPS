@@ -25,22 +25,21 @@ def plot_itinerary(itinerary: Itinerary, projection = 'robin', line_width=2, col
     #TODO
     lons = []
     lats= []
-    file_name = "map_"
-    m = Basemap(projection=projection, lon_0=0,llcrnrlon=-50,llcrnrlat=50,urcrnrlon=-50,urcrnrlat=50)
-    m.fillcontinents(color="grey")
-    m.drawcoastlines()
-    for city in itinerary.cities:
-        lons.append(float(city.coordinates[1]))
-        lats.append(float(city.coordinates[0]))
-        file_name += city.name + "_"
-    file_name = file_name[:-1] + ".png"
 
-    print(file_name)
+    m = Basemap(projection=projection, lon_0=0,llcrnrlon=-50,llcrnrlat=50,urcrnrlon=-50,urcrnrlat=50)
+    m.fillcontinents()
+    m.drawcoastlines()
+    for i in range(len(itinerary.cities) - 1):
+        m.drawgreatcircle(itinerary.cities[i].coordinates[1], itinerary.cities[i].coordinates[0], itinerary.cities[i+1].coordinates[1], itinerary.cities[i+1].coordinates[0],color=colour, linewidth=line_width)
+
+ 
     x_coords, y_coords = m(lons, lats)
 
+    lst = [city.name for city in itinerary.cities]
+    filename = "map_" + "_".join(lst) + ".png"
+    print(filename)
 
-    m.plot(x_coords,y_coords, color=colour, linewidth=line_width)
-    plt.savefig(file_name)
+    plt.savefig(filename)
 
     plt.show()
   

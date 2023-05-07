@@ -8,8 +8,7 @@ of the class City and the class Country.
 """
 import csv
 from city import City
-from country import Country
-
+from country import Country, add_city_to_country
 def create_cities_countries_from_csv(path_to_csv: str) -> None:
     """
     Reads a CSV file given its path and creates instances of City and Country for each line.
@@ -22,19 +21,15 @@ def create_cities_countries_from_csv(path_to_csv: str) -> None:
         headers  = next(csv_reader)
         indexes = {}
         country_cnt = 0
+       
         for i in range(len(headers)):
             indexes[headers[i]] = i
         for row in csv_reader:
             if (row[indexes["population"]] == ''):
                 row[indexes["population"]] = 0
-            city = City(row[indexes["city"]], (row[indexes["lat"]], row[indexes["lng"]]),row[indexes["capital"]], row[indexes["population"]], int(row[indexes["id"]]))
+            city = City(row[indexes["city"]], (float(row[indexes["lat"]]), float(row[indexes["lng"]])),row[indexes["capital"]], int(row[indexes["population"]]), int(row[indexes["id"]]))
             country_cnt += 1
-            if  row[indexes["country"]] not in Country.name_to_countries:
-                country = Country(row[indexes["country"]], row[indexes["iso3"]])
-                country.add_city(city)
-                
-            else:
-                Country.name_to_countries[row[indexes["country"]]].add_city(city)
+            add_city_to_country(city, row[indexes["country"]], row[indexes["iso3"]])
     # print(country_cnt)
 
 if __name__ == "__main__":

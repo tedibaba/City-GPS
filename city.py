@@ -112,7 +112,7 @@ def get_cities_by_name(city_name: str) -> list[City]:
     :return: the list of cities known by this name. 
     """
     #TODO
-    return City.name_to_cities[city_name]
+    return City.name_to_cities[city_name] if city_name in City.name_to_cities else [] # if the city name exists in name_to_cities, return the list, otherwise return an empty list
 
 
 

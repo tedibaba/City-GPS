@@ -30,23 +30,26 @@ def find_shortest_path(vehicle: Vehicle, from_city: City, to_city: City) -> Itin
     graph = networkx.Graph()
     for city in City.id_to_cities.values():
         for next_city in City.id_to_cities.values():
-            if city.city_id != next_city.city_id:
+            if city.city_id != next_city.city_id: 
 
                 if (isinstance(vehicle, CrappyCrepeCar)):
+                    #For the CrappyCrepeCar, it can travel between any two cities and therefore we add a edge between every city.
                     graph.add_weighted_edges_from([(city, next_city, vehicle.compute_travel_time(city, next_city))])
                 if (isinstance(vehicle, DiplomacyDonutDinghy)):
+                    #For the DiplomacyDonutDinghy, it can travel only between cities in the same country and primary cities between two countries
                     if(vehicle.compute_travel_time(city, next_city) != math.inf):        
                         graph.add_weighted_edges_from([(city, next_city, vehicle.compute_travel_time(city, next_city))])
                 if(isinstance(vehicle, TeleportingTarteTrolley)):
+                    #For the TeleportingTarteTrolley, it can travely only between cities within a certain distance
                     if (vehicle.compute_travel_time(city, next_city) != math.inf):
                         graph.add_weighted_edges_from([(city, next_city, vehicle.compute_travel_time(city, next_city))])
     
     try:
         short_path = networkx.shortest_path(graph, source=from_city, target=to_city)
-        itinerary = Itinerary(short_path)
+        itinerary = Itinerary(short_path) # Create an itinerary object of the calculated shortest path.
 
         return itinerary 
-    except:
+    except networkx.exception.NodeNotFound: # An error will be returned when a path cannot be found
         return None
 
 

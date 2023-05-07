@@ -39,7 +39,6 @@ class Vehicle(ABC):
         :return: the travel time in hours (an integer),
                  or math.inf if the travel is not possible.
         """
-        #TODO
         time = 0
 
         for i in range(len(itinerary.cities) - 1):
@@ -66,7 +65,6 @@ class CrappyCrepeCar(Vehicle):
 
         :param speed: the speed in km/h.
         """
-        #TODO
         self.speed = speed
 
     def compute_travel_time(self, departure: City, arrival: City) -> float:
@@ -79,7 +77,6 @@ class CrappyCrepeCar(Vehicle):
         :return: the travel time in hours, rounded up to an integer,
                  or math.inf if the travel is not possible.
         """
-        #TODO
 
         distance = departure.distance(arrival)
         return math.ceil(distance/self.speed) 
@@ -92,7 +89,6 @@ class CrappyCrepeCar(Vehicle):
 
         :return: the string representation of the vehicle.
         """
-        #TODO
         return "CrappyCrepeCar (" + str(self.speed) + " km/h)"
 
 class DiplomacyDonutDinghy(Vehicle):
@@ -112,7 +108,7 @@ class DiplomacyDonutDinghy(Vehicle):
         :param in_country_speed: the speed within one country.
         :param between_primary_speed: the speed between two primary cities.
         """
-        #TODO
+     
         self.in_country_speed = in_country_speed
         self.between_primary_speed = between_primary_speed
 
@@ -127,12 +123,11 @@ class DiplomacyDonutDinghy(Vehicle):
         :return: the travel time in hours, rounded up to an integer,
                  or math.inf if the travel is not possible.
         """
-        #TODO
         departure_country = find_country_of_city(departure)
-        if arrival in departure_country.cities:
+        if arrival in departure_country.cities: # the DiplomacyDonutDinghy can travel directly to the city if it is in the same country
             distance_to_arrival = departure.distance(arrival)
             return math.ceil(distance_to_arrival/self.in_country_speed)    
-        elif departure.city_type == "primary" and arrival.city_type == "primary":
+        elif departure.city_type == "primary" and arrival.city_type == "primary": # If the arrival city is out of the country, then it will have to be a primary city in order to travel to it.
             distance_to_arrival = departure.distance(arrival)
             return math.ceil(distance_to_arrival/self.between_primary_speed)
         else:
@@ -145,7 +140,6 @@ class DiplomacyDonutDinghy(Vehicle):
 
         :return: the string representation of the vehicle.
         """
-        #TODO
         return "DiplomacyDonutDinghy (" + str(self.in_country_speed) + " km/h | " + str(self.between_primary_speed) + " km/h)"
 
 class TeleportingTarteTrolley(Vehicle):
@@ -162,7 +156,6 @@ class TeleportingTarteTrolley(Vehicle):
         :param travel_time: the time it takes to travel.
         :param max_distance: the maximum distance it can travel.u 
         """
-        #TODO
         self.max_distance = max_distance
         self.travel_time = travel_time
 
@@ -177,8 +170,7 @@ class TeleportingTarteTrolley(Vehicle):
         :return: the travel time in hours, rounded up to an integer,
                  or math.inf if the travel is not possible.
         """
-        #TODO
-        if (departure.distance(arrival) < self.max_distance):
+        if (departure.distance(arrival) < self.max_distance): # the distance to the destination has to be less than the max distance
             return self.travel_time
         else:
             return math.inf
@@ -190,7 +182,6 @@ class TeleportingTarteTrolley(Vehicle):
 
         :return: the string representation of the vehicle.
         """
-        #TODO
         return "TeleportingTarteTrolley (" + str(self.travel_time) + " h | " + str(self.max_distance) + " km)"
     
 def create_example_vehicles() -> list[Vehicle]:
